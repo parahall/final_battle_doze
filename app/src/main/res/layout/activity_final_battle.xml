@@ -69,7 +69,6 @@
       android:scaleType="fitCenter"
       android:src="@drawable/light_side_result"
       android:visibility="gone"
-      tools:visibility="visible"
       />
 
 </RelativeLayout>

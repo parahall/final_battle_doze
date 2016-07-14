@@ -21,18 +21,24 @@ public class HanSoloReceiver extends WakefulBroadcastReceiver {
     LocationManager locationService =
         (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-    Intent hanSoloLocationIntent = new Intent(context, NowIntentService.class);
-    PendingIntent pendingIntent =
-        PendingIntent.getService(context, LOCATION_REQUEST_CODE, hanSoloLocationIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent pendingIntent = getPendingIntent(context);
 
     if (checkPermission(context)) return;
 
-    Log.d(TAG, "onReceive: Requesting single location");
+    String provider = getLocationProvider(locationService);
+    locationService.requestSingleUpdate(provider, pendingIntent);
+  }
+
+  private String getLocationProvider(LocationManager locationService) {
     Criteria criteria = new Criteria();
     criteria.setAccuracy(Criteria.ACCURACY_FINE);
-    String provider = locationService.getBestProvider(criteria, true);
-    locationService.requestSingleUpdate(provider, pendingIntent);
+    return locationService.getBestProvider(criteria, true);
+  }
+
+  private PendingIntent getPendingIntent(Context context) {
+    Intent hanSoloLocationIntent = new Intent(context, NowIntentService.class);
+    return PendingIntent.getService(context, LOCATION_REQUEST_CODE, hanSoloLocationIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT);
   }
 
   private boolean checkPermission(Context context) {

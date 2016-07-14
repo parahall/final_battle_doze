@@ -53,12 +53,16 @@ public class FinalBattleActivity extends AppCompatActivity implements View.OnCli
 
   private void scheduleHanSoloReport() {
     AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-    Intent intent = new Intent(HanSoloReceiver.ACTION);
-    PendingIntent broadcast = PendingIntent.getBroadcast(this, HanSoloReceiver.REQUEST_CODE, intent,
-        PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent broadcast = getPendingIntent();
     Log.d(TAG, "scheduleHanSoloReport: Alarm scheduled");
     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), ONE_MINUTE,
         broadcast);
+  }
+
+  private PendingIntent getPendingIntent() {
+    Intent intent = new Intent(HanSoloReceiver.ACTION);
+    return PendingIntent.getBroadcast(this, HanSoloReceiver.REQUEST_CODE, intent,
+        PendingIntent.FLAG_UPDATE_CURRENT);
   }
 
   private void showLukeLoveFather() {
