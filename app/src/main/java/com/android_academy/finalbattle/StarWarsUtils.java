@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.OneoffTask;
+import com.google.android.gms.gcm.Task;
 
 public class StarWarsUtils {
 
@@ -13,8 +17,21 @@ public class StarWarsUtils {
   public static final String SHOW_RESULT_ACTION = "SHOW_RESULT";
 
   public static void addRetryTask(LukeDecision decision, Context context) {
-    SharedPreferences sharedPreferences = getSharedPreferences(context);
-    sharedPreferences.edit().putString(LukeDecision.class.getSimpleName(), decision.name()).apply();
+
+    Bundle bundle = new Bundle();
+    bundle.putSerializable(LukeDecision.class.getSimpleName(), decision);
+
+    GcmNetworkManager gcmNetworkManager = GcmNetworkManager.getInstance(context);
+    Task task = new OneoffTask.Builder().setService(BestTimeService.class)
+        .setExecutionWindow(0, 30)
+        .setTag(BestTimeService.LUKE_DECISION)
+        .setUpdateCurrent(false)
+        .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
+        .setRequiresCharging(false)
+        .setExtras(bundle)
+        .build();
+
+    gcmNetworkManager.schedule(task);
   }
 
   private static SharedPreferences getSharedPreferences(Context context) {

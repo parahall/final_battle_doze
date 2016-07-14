@@ -1,6 +1,5 @@
 package com.android_academy.finalbattle;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,10 +13,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import com.android_academy.finalbattle.StarWarsUtils.LukeDecision;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.PeriodicTask;
+import com.google.android.gms.gcm.Task;
 
 public class FinalBattleActivity extends AppCompatActivity implements View.OnClickListener {
 
-  public static final int ONE_MINUTE = 60 * 1000;
+  public static final int SIXTY_SEC = 60;
   private static final String TAG = FinalBattleActivity.class.getSimpleName();
   private LukeDecisionResultReceiver receiver;
 
@@ -52,17 +54,15 @@ public class FinalBattleActivity extends AppCompatActivity implements View.OnCli
   }
 
   private void scheduleHanSoloReport() {
-    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-    PendingIntent broadcast = getPendingIntent();
-    Log.d(TAG, "scheduleHanSoloReport: Alarm scheduled");
-    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), ONE_MINUTE,
-        broadcast);
-  }
+    Task task = new PeriodicTask.Builder()
+        .setService(BestTimeService.class)
+        .setPeriod(SIXTY_SEC)
+        .setFlex(10)
+        .setTag(BestTimeService.HAN_SOLO_LOCATION)
+        .setPersisted(true)
+        .build();
 
-  private PendingIntent getPendingIntent() {
-    Intent intent = new Intent(HanSoloReceiver.ACTION);
-    return PendingIntent.getBroadcast(this, HanSoloReceiver.REQUEST_CODE, intent,
-        PendingIntent.FLAG_UPDATE_CURRENT);
+    GcmNetworkManager.getInstance(this).schedule(task);
   }
 
   private void showLukeLoveFather() {
