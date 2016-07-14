@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.android_academy.finalbattle.FinalBattleActivity"
+    >
+
+  <RelativeLayout
+      android:id="@+id/star_wars_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      >
+
+
+    <ImageView
+        android:id="@+id/light_side_button"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/light_side"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/light_side_button"
+        android:layout_alignRight="@id/light_side_button"
+        android:layout_below="@+id/light_side_button"
+        android:gravity="center"
+        android:text="Stay on the light "
+        android:textColor="#e5b13a"
+        android:textSize="20sp"
+        />
+
+    <ImageView
+        android:id="@+id/kill_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dark_side"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/kill_button"
+        android:layout_alignRight="@id/kill_button"
+        android:layout_below="@+id/kill_button"
+        android:gravity="center"
+        android:text="Kill Darth Vader"
+        android:textColor="#e5b13a"
+        android:textSize="20sp"
+        />
+
+  </RelativeLayout>
+  <ImageView
+      android:id="@+id/result_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scaleType="fitCenter"
+      android:src="@drawable/light_side_result"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+</RelativeLayout>
