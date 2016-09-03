@@ -29,6 +29,8 @@ public class FinalBattleActivity extends AppCompatActivity implements View.OnCli
 
     scheduleHanSoloReport();
 
+    startService(new Intent(this, RebelService.class));
+
     receiver = new LukeDecisionResultReceiver();
     registerReceiver(receiver, new IntentFilter(StarWarsUtils.SHOW_RESULT_ACTION));
   }

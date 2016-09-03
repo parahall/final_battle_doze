@@ -15,7 +15,6 @@
       android:theme="@style/AppTheme">
     <activity android:name=".FinalBattleActivity"/>
 
-
     <receiver
         android:name=".HanSoloReceiver"
         android:enabled="true">
@@ -43,6 +42,12 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+
+    <service
+        android:name=".RebelService"
+        android:enabled="true"
+        android:exported="false">
+    </service>
   </application>
 
 </manifest>

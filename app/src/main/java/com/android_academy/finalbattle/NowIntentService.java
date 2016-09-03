@@ -6,9 +6,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
 import com.android_academy.finalbattle.StarWarsUtils.LukeDecision;
-import java.io.IOException;
-import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
 
 public class NowIntentService extends IntentService {
 
@@ -38,7 +35,7 @@ public class NowIntentService extends IntentService {
     boolean isCompleted = false;
     if (StarWarsUtils.isNetworkActive(getApplicationContext())) {
       Log.d(TAG, "Network is active");
-      isCompleted = doingNetworkCommunication();
+      isCompleted = StarWarsUtils.doingNetworkCommunication();
     }
 
     if (!isCompleted) {
@@ -50,22 +47,6 @@ public class NowIntentService extends IntentService {
     Intent showResult = new Intent(StarWarsUtils.SHOW_RESULT_ACTION);
     showResult.putExtra(LukeDecision.class.getSimpleName(), decision);
     sendBroadcast(showResult);
-  }
-
-  /**
-   * Make a network request form STAR_WARS_LOCATION.
-   */
-  public static boolean doingNetworkCommunication() {
-    try {
-      URL url = new URL(StarWarsUtils.STAR_WARS_LOCATION);
-      HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-      httpsURLConnection.getInputStream();
-      Log.d(TAG, "Network call completed.");
-      return true;
-    } catch (IOException e) {
-      Log.e(TAG, "IOException " + e.getMessage());
-      return false;
-    }
   }
 
   private void checkIfRebelsReady(Location hanSoloLocation) {

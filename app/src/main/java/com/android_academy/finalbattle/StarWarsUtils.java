@@ -5,12 +5,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+import java.io.IOException;
+import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
 
 public class StarWarsUtils {
 
   //public static final String STAR_WARS_LOCATION = "http://starwars.com";
   public static final String STAR_WARS_LOCATION = "https://google.com";
   public static final String SHOW_RESULT_ACTION = "SHOW_RESULT";
+  private static final String TAG = StarWarsUtils.class.getSimpleName();
 
   public static void addRetryTask(LukeDecision decision, Context context) {
     SharedPreferences sharedPreferences = getSharedPreferences(context);
@@ -49,5 +54,22 @@ public class StarWarsUtils {
     Intent nowIntent = new Intent(context, NowIntentService.class);
     nowIntent.putExtra(LukeDecision.class.getSimpleName(), decision);
     context.startService(nowIntent);
+  }
+
+
+  /**
+   * Make a network request form STAR_WARS_LOCATION.
+   */
+  public static boolean doingNetworkCommunication() {
+    try {
+      URL url = new URL(StarWarsUtils.STAR_WARS_LOCATION);
+      HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+      httpsURLConnection.getInputStream();
+      Log.d(TAG, "Network call completed.");
+      return true;
+    } catch (IOException e) {
+      Log.e(TAG, "IOException " + e.getMessage());
+      return false;
+    }
   }
 }
